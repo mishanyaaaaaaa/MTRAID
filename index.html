@@ -410,6 +410,8 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
     tg.ready();
+tg.setHeaderColor('#040906');
+tg.setBackgroundColor('#040906');
 
     lucide.createIcons();
 
@@ -439,19 +441,5 @@
       console.log('Переход в раздел:', sectionName);
     }
   </script>
-<script>
-    // Подключаем API Телеграма
-    const tg = window.Telegram.WebApp;
-    
-    // Растягиваем приложение на весь экран (чтобы было красивее)
-    tg.expand();
-
-    // Меняем цвет верхней шапки на темный.
-    // Я взял цвет из твоих стилей (--bg-color: #040906), но можешь вписать любой HEX.
-    tg.setHeaderColor('#040906'); 
-    
-    // (Опционально) Меняем цвет нижней системной панели (для пользователей iOS)
-    tg.setBackgroundColor('#040906');
-</script>
 </body>
 </html>
