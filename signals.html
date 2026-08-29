@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MTRAID SOFT — Торговля</title>
+    
+    <!-- Telegram SDK & Lucide Icons -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- TradingView Lightweight Charts SDK -->
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #0b0e14;
+            --panel-bg: #131822;
+            --panel-border: rgba(255, 255, 255, 0.08);
+            --accent-green: #00e676;
+            --accent-blue: #4f46e5;
+            --accent-purple: #6366f1;
+            --text-main: #ffffff;
+            --text-muted: #787f8d;
+            --red-zone: rgba(239, 68, 68, 0.2);
+            --green-zone: rgba(16, 185, 129, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 12px;
+        }
+
+        /* Верхняя панель навигации */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .back-btn {
+            width: 36px;
+            height: 36px;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .page-title {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .page-subtitle {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Панель настроек сигнала */
+        .control-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .selectors-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .select-box {
+            background: #1a202c;
+            border: 1px solid var(--panel-border);
+            border-radius: 10px;
+            padding: 8px 12px;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .badge-analytics {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 11px;
+            color: var(--accent-green);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Блок статуса и кнопки генерации */
+        .signal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .signal-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .signal-info p {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border: none;
+            border-radius: 12px;
+            padding: 10px 18px;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+            cursor: pointer;
+        }
+
+        .btn-generate:active {
+            transform: scale(0.96);
+        }
+
+        /* Контейнер графика */
+        .chart-wrapper {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 14px;
+            padding: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #chart-container {
+            width: 100%;
+            height: 320px;
+        }
+
+        #rsi-container {
+            width: 100%;
+            height: 90px;
+            border-top: 1px solid var(--panel-border);
+            margin-top: 6px;
+        }
+
+        /* Оверлей-метки аналитики на графике */
+        .chart-overlay-tag {
+            position: absolute;
+            font-size: 9px;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 4px;
+            z-index: 10;
+        }
+
+        .tag-resistance { top: 60px; right: 60px; background: rgba(239, 68, 68, 0.8); color: #fff; }
+        .tag-liquidity { top: 110px; right: 60px; background: #eab308; color: #000; }
+        .tag-support { bottom: 120px; right: 60px; background: rgba(16, 185, 129, 0.8); color: #fff; }
+    </style>
+</head>
+<body>
+
+    <!-- Верхняя панель -->
+    <div class="top-bar">
+        <div class="back-btn" onclick="history.back()">
+            <i data-lucide="arrow-left" size="20"></i>
+        </div>
+        <div>
+            <div class="page-title">Торговля</div>
+            <div class="page-subtitle" id="selected-pair-title">EUR/USD OTC</div>
+        </div>
+    </div>
+
+    <!-- Селектор и аналитика -->
+    <div class="control-panel">
+        <div class="selectors-row">
+            <div class="select-box">
+                <span>EUR/USD OTC</span>
+                <i data-lucide="chevron-down" size="16"></i>
+            </div>
+            <div class="select-box" style="max-width: 80px;">
+                <span>M1</span>
+                <i data-lucide="chevron-down" size="16"></i>
+            </div>
+        </div>
+        <div class="badge-analytics">
+            <i data-lucide="check-circle-2" size="14"></i>
+            <span>Расширенная аналитика: ключевые уровни, зоны и сигналы</span>
+        </div>
+    </div>
+
+    <!-- Заголовок запроса сигнала -->
+    <div class="signal-header">
+        <div class="signal-info">
+            <p style="color: var(--accent-green); font-weight: 700; margin-bottom: 2px;">ОСТАЛОСЬ СЕГОДНЯ: 2</p>
+            <h3>Настройте новый сигнал</h3>
+        </div>
+        <button class="btn-generate" onclick="generateSignal()">
+            <i data-lucide="sparkles" size="16"></i>
+            <span>Получить сигнал</span>
+        </button>
+    </div>
+
+    <!-- График с индикаторами -->
+    <div class="chart-wrapper">
+        <div class="chart-overlay-tag tag-resistance">Сопротивление · 1.24080</div>
+        <div class="chart-overlay-tag tag-liquidity">Ликвидность · 1.24028</div>
+        <div class="chart-overlay-tag tag-support">Поддержка · 1.23889</div>
+        
+        <div id="chart-container"></div>
+        <div id="rsi-container"></div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.setHeaderColor('#0b0e14');
+        tg.setBackgroundColor('#0b0e14');
+
+        lucide.createIcons();
+
+        // 1. Инициализация основного графика свечей
+        const chartElement = document.getElementById('chart-container');
+        const chart = LightweightCharts.createChart(chartElement, {
+            layout: {
+                background: { color: 'transparent' },
+                textColor: '#787f8d',
+            },
+            grid: {
+                vertLines: { color: 'rgba(255, 255, 255, 0.05)' },
+                horzLines: { color: 'rgba(255, 255, 255, 0.05)' },
+            },
+            timeScale: { timeVisible: true, secondsVisible: false },
+            rightPriceScale: { borderColor: 'rgba(255, 255, 255, 0.1)' }
+        });
+
+        const candleSeries = chart.addCandlestickSeries({
+            upColor: '#10b981',
+            downColor: '#ef4444',
+            borderVisible: false,
+            wickUpColor: '#10b981',
+            wickDownColor: '#ef4444',
+        });
+
+        // Генерация демо-данных свечей (OTC)
+        function generateCandleData() {
+            let data = [];
+            let time = Math.floor(Date.now() / 1000) - 3600;
+            let open = 1.23800;
+            
+            for (let i = 0; i < 60; i++) {
+                let high = open + Math.random() * 0.0006;
+                let low = open - Math.random() * 0.0006;
+                let close = low + Math.random() * (high - low);
+                data.push({ time: time + i * 60, open, high, low, close });
+                open = close;
+            }
+            return data;
+        }
+
+        const candleData = generateCandleData();
+        candleSeries.setData(candleData);
+
+        // 2. Инициализация нижнего индикатора RSI
+        const rsiElement = document.getElementById('rsi-container');
+        const rsiChart = LightweightCharts.createChart(rsiElement, {
+            layout: { background: { color: 'transparent' }, textColor: '#787f8d' },
+            grid: { horzLines: { color: 'rgba(255, 255, 255, 0.05)' }, vertLines: { visible: false } },
+            rightPriceScale: { scaleMargins: { top: 0.1, bottom: 0.1 } }
+        });
+
+        const rsiSeries = rsiChart.addLineSeries({
+            color: '#8b5cf6',
+            lineWidth: 2,
+        });
+
+        const rsiData = candleData.map(c => ({
+            time: c.time,
+            value: 30 + Math.random() * 40
+        }));
+        rsiSeries.setData(rsiData);
+
+        // Авто-ресайз графиков под экран смартфона
+        window.addEventListener('resize', () => {
+            chart.applyOptions({ width: chartElement.clientWidth });
+            rsiChart.applyOptions({ width: rsiElement.clientWidth });
+        });
+
+        // Генерация действия по кнопке "Получить сигнал"
+        function generateSignal() {
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.notificationOccurred('success');
+            }
+            alert('Анализ нейросети завершен!\nПара: EUR/USD OTC\nНаправление: ВВЕРХ (CALL) 🟢\nВремя входа: 1 МИНУТА');
+        }
+    </script>
+</body>
+</html>
