@@ -161,29 +161,30 @@
           <i data-lucide="hash" size="18" style="color: var(--text-muted);"></i>
           <input type="number" id="traderIdInput" placeholder="Введите ID аккаунта">
         </div>
-        <button class="check-btn" onclick="verifyTraderId()">
-          <span>Найти аккаунт</span>
-          <i data-lucide="arrow-right" size="20"></i>
+<button class="check-btn" onclick="verifyTraderId()">
+            <span>Найти аккаунт</span>
+            <i data-lucide="arrow-right" size="20"></i>
         </button>
-<!-- Кнопка "Создать аккаунт" -->
-        <a href="https://u3.shortink.io/register?utm_campaign=753033&utm_source=affiliate&utm_medium=sr&a=3HuZKixpEazQth&al=1806646&ac=button_register_mtraid_soft&cid=988075" target="_blank" class="action-btn register-btn">
+
+        <!-- Кнопка "Создать аккаунт" -->
+        <button type="button" class="action-btn register-btn" onclick="openRefLink()">
             <div class="btn-icon">
                 <i data-lucide="user-plus" size="20"></i>
             </div>
             <span>Создать аккаунт</span>
             <i data-lucide="external-link" size="18"></i>
-        </a>
+        </button>
 
         <!-- Кнопка "У меня уже есть аккаунт" -->
-        <a href="https://u3.shortink.io/register?utm_campaign=753033&utm_source=affiliate&utm_medium=sr&a=3HuZKixpEazQth&al=1806646&ac=button_register_mtraid_soft&cid=988075" target="_blank" class="action-btn secondary-btn">
+        <button type="button" class="action-btn secondary-btn" onclick="openRefLink()">
             <div class="btn-icon">
                 <i data-lucide="check-circle-2" size="20"></i>
             </div>
             <span>У меня уже есть аккаунт</span>
             <i data-lucide="arrow-right" size="18"></i>
-        </a>
-      </div>
+        </button>
     </div>
+</div>
   </div>
 
   <!-- МОДАЛКА 1: НУЖЕН ДЕПОЗИТ (Фото 1) -->
@@ -248,6 +249,15 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
     lucide.createIcons();
+
+    function openRefLink() {
+        const url = 'https://u3.shortink.io/register?utm_campaign=753033&utm_source=affiliate&utm_medium=sr&a=3HuZKixpEazQth&al=1806646&ac=button_register_mtraid_soft&cid=988075';
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openLink) {
+            window.Telegram.WebApp.openLink(url);
+        } else {
+            window.open(url, '_blank');
+        }
+    }
 
     let onboardingStep = 1;
 
