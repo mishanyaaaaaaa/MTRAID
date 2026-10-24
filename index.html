@@ -407,6 +407,15 @@
   </div>
 
   <script>
+
+(function checkAuth() {
+  const verifiedTraderId = localStorage.getItem('verified_trader_id');
+  if (!verifiedTraderId) {
+    // Если ID не сохранен — выкидываем пользователя обратно на форму ввода ID
+    window.location.href = 'IDtrade.html';
+  }
+})();
+
     const tg = window.Telegram.WebApp;
     tg.expand();
     tg.ready();

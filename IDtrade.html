@@ -185,11 +185,12 @@
         const response = await fetch(`http://177.177.223.174:3000/api/check/${inputVal}`);
         const data = await response.json();
 
-        if (data.access === 'granted') {
+       if (data.access === 'granted') {
+          localStorage.setItem('verified_trader_id', inputVal); // <--- ДОБАВИТЬ ЭТУ СТРОЧКУ
           onboardingStep = 1;
           updateOnboardingContent();
           document.getElementById('modalOnboarding').classList.add('active');
-        } 
+        }
         else if (data.access === 'need_deposit') {
           document.getElementById('modalDeposit').classList.add('active');
         } 
