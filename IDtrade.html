@@ -182,7 +182,7 @@
       if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
 
       try {
-        const response = await fetch(`http://177.177.223.174:3000/api/check/${inputVal}`);
+        const response = await fetch(`/api/check/${inputVal}`);
         const data = await response.json();
 
        if (data.access === 'granted') {
