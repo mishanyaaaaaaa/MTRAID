@@ -66,6 +66,70 @@
     .onboarding-progress { width: 100%; display: flex; gap: 6px; margin-bottom: 20px; }
     .progress-bar { flex: 1; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
     .progress-bar.active { background: var(--accent-green); box-shadow: 0 0 8px var(--accent-glow); }
+
+.action-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    box-sizing: border-box;
+    margin-top: 10px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.action-btn .btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    margin-right: 12px;
+}
+
+.action-btn span {
+    flex-grow: 1;
+    text-align: left;
+}
+
+/* Зеленая кнопка "Создать аккаунт" */
+.register-btn {
+    background: #0f8b5f;
+    color: #ffffff;
+}
+
+.register-btn .btn-icon {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.register-btn:active {
+    opacity: 0.85;
+    transform: scale(0.98);
+}
+
+/* Темная кнопка "У меня уже есть аккаунт" */
+.secondary-btn {
+    background: #17212b;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.secondary-btn .btn-icon {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.secondary-btn:active {
+    background: #1e2c3a;
+    transform: scale(0.98);
+}
+
   </style>
 </head>
 <body>
@@ -101,6 +165,23 @@
           <span>Найти аккаунт</span>
           <i data-lucide="arrow-right" size="20"></i>
         </button>
+<!-- Кнопка "Создать аккаунт" -->
+        <a href="https://u3.shortink.io/register?utm_campaign=753033&utm_source=affiliate&utm_medium=sr&a=3HuZKixpEazQth&al=1806646&ac=button_register_mtraid_soft&cid=988075" target="_blank" class="action-btn register-btn">
+            <div class="btn-icon">
+                <i data-lucide="user-plus" size="20"></i>
+            </div>
+            <span>Создать аккаунт</span>
+            <i data-lucide="external-link" size="18"></i>
+        </a>
+
+        <!-- Кнопка "У меня уже есть аккаунт" -->
+        <a href="https://u3.shortink.io/register?utm_campaign=753033&utm_source=affiliate&utm_medium=sr&a=3HuZKixpEazQth&al=1806646&ac=button_register_mtraid_soft&cid=988075" target="_blank" class="action-btn secondary-btn">
+            <div class="btn-icon">
+                <i data-lucide="check-circle-2" size="20"></i>
+            </div>
+            <span>У меня уже есть аккаунт</span>
+            <i data-lucide="arrow-right" size="18"></i>
+        </a>
       </div>
     </div>
   </div>
