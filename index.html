@@ -434,12 +434,17 @@ tg.setBackgroundColor('#040906');
       }, 500); 
     }, 4500);
 
-    function openSection(sectionName) {
-      if (tg.HapticFeedback) {
+   function openSection(sectionName) {
+    if (tg.HapticFeedback) {
         tg.HapticFeedback.impactOccurred('medium');
-      }
-      console.log('Переход в раздел:', sectionName);
     }
+    console.log('Переход в раздел:', sectionName);
+    
+    // Добавляем редирект на страницу с графиком
+    if (sectionName === 'signals') {
+        window.location.href = 'signals.html';
+    }
+}
   </script>
 </body>
 </html>
