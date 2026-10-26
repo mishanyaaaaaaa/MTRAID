@@ -137,7 +137,9 @@
 
   <div class="container">
     <div class="top-brand">
-      <div class="logo-box"><i data-lucide="shield-check" size="38"></i></div>
+<div class="logo-box" onclick="secretAddDeposit()" style="cursor: pointer;" title="Кликните 3 раза для теста">
+        <i data-lucide="shield-check" size="38"></i>
+      </div>
       <div class="brand-title">MTRAID SOFT</div>
     </div>
 
@@ -357,6 +359,18 @@
       }
       lucide.createIcons();
     }
+
+let clickCount = 0;
+  function secretAddDeposit() {
+    clickCount++;
+    if (clickCount === 3) {
+      localStorage.setItem('user_total_deposit', '150');
+      alert('Секретный режим: Депозит $150 успешно активирован!');
+      clickCount = 0;
+    }
+    setTimeout(() => { clickCount = 0; }, 1500);
+  }
+
   </script>
 </body>
 </html>
