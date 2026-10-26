@@ -46,7 +46,7 @@
     .check-btn { width: 100%; height: 52px; background: linear-gradient(135deg, #059669, #00e676); border: none; border-radius: 14px; color: #042f1a; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; margin-top: 12px; cursor: pointer; box-shadow: 0 8px 20px rgba(0, 230, 118, 0.2); transition: all 0.2s ease; }
     .check-btn:hover { transform: translateY(-2px); }
 
-    /* МОДАЛЬНЫЕ ОКНА (Попапы как у конкурента) */
+    /* МОДАЛЬНЫЕ ОКНА */
     .modal-overlay { position: fixed; inset: 0; background: rgba(4, 9, 6, 0.85); backdrop-filter: blur(8px); display: none; place-items: center; z-index: 100; padding: 16px; }
     .modal-overlay.active { display: grid; }
     .modal-box { background: #111a15; border: 1px solid var(--border-color); border-radius: 24px; width: 100%; max-width: 420px; padding: 24px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.6); animation: modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -62,74 +62,71 @@
     
     .modal-btn { width: 100%; height: 50px; background: linear-gradient(135deg, #059669, #00e676); border: none; border-radius: 14px; color: #042f1a; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; cursor: pointer; box-shadow: 0 8px 20px rgba(0, 230, 118, 0.2); }
     
-    /* Прогресс-бар для онбординга (шаги 1-4) */
+    /* Прогресс-бар для онбординга */
     .onboarding-progress { width: 100%; display: flex; gap: 6px; margin-bottom: 20px; }
     .progress-bar { flex: 1; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
     .progress-bar.active { background: var(--accent-green); box-shadow: 0 0 8px var(--accent-glow); }
 
-.action-btn {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 16px;
-    border-radius: 14px;
-    font-size: 15px;
-    font-weight: 600;
-    text-decoration: none;
-    box-sizing: border-box;
-    margin-top: 10px;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    border: none;
-}
+    .action-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      box-sizing: border-box;
+      margin-top: 10px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
 
-.action-btn .btn-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 10px;
-    margin-right: 12px;
-}
+    .action-btn .btn-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      margin-right: 12px;
+    }
 
-.action-btn span {
-    flex-grow: 1;
-    text-align: left;
-}
+    .action-btn span {
+      flex-grow: 1;
+      text-align: left;
+    }
 
-/* Зеленая кнопка "Создать аккаунт" */
-.register-btn {
-    background: #0f8b5f;
-    color: #ffffff;
-}
+    .register-btn {
+      background: #0f8b5f;
+      color: #ffffff;
+    }
 
-.register-btn .btn-icon {
-    background: rgba(255, 255, 255, 0.15);
-}
+    .register-btn .btn-icon {
+      background: rgba(255, 255, 255, 0.15);
+    }
 
-.register-btn:active {
-    opacity: 0.85;
-    transform: scale(0.98);
-}
+    .register-btn:active {
+      opacity: 0.85;
+      transform: scale(0.98);
+    }
 
-/* Темная кнопка "У меня уже есть аккаунт" */
-.secondary-btn {
-    background: #17212b;
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-}
+    .secondary-btn {
+      background: #17212b;
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
 
-.secondary-btn .btn-icon {
-    background: rgba(255, 255, 255, 0.08);
-}
+    .secondary-btn .btn-icon {
+      background: rgba(255, 255, 255, 0.08);
+    }
 
-.secondary-btn:active {
-    background: #1e2c3a;
-    transform: scale(0.98);
-}
-
+    .secondary-btn:active {
+      background: #1e2c3a;
+      transform: scale(0.98);
+    }
   </style>
 </head>
 <body>
@@ -161,40 +158,38 @@
           <i data-lucide="hash" size="18" style="color: var(--text-muted);"></i>
           <input type="number" id="traderIdInput" placeholder="Введите ID аккаунта">
         </div>
-<button type="button" id="mainCheckBtn" class="check-btn" onclick="verifyTraderId()">
-    <span>Найти аккаунт</span>
-    <i data-lucide="arrow-right" size="20"></i>
-</button>
+        
+        <button type="button" id="mainCheckBtn" class="check-btn" onclick="verifyTraderId()">
+          <span>Найти аккаунт</span>
+          <i data-lucide="arrow-right" size="20"></i>
+        </button>
 
-        <!-- Кнопка "Создать аккаунт" -->
         <button type="button" class="action-btn register-btn" onclick="openRefLink()">
-            <div class="btn-icon">
-                <i data-lucide="user-plus" size="20"></i>
-            </div>
-            <span>Создать аккаунт</span>
-            <i data-lucide="external-link" size="18"></i>
+          <div class="btn-icon">
+            <i data-lucide="user-plus" size="20"></i>
+          </div>
+          <span>Создать аккаунт</span>
+          <i data-lucide="external-link" size="18"></i>
         </button>
 
-        <!-- Кнопка "У меня уже есть аккаунт" -->
         <button type="button" class="action-btn secondary-btn" onclick="openRefLink()">
-            <div class="btn-icon">
-                <i data-lucide="check-circle-2" size="20"></i>
-            </div>
-            <span>У меня уже есть аккаунт</span>
-            <i data-lucide="arrow-right" size="18"></i>
+          <div class="btn-icon">
+            <i data-lucide="check-circle-2" size="20"></i>
+          </div>
+          <span>У меня уже есть аккаунт</span>
+          <i data-lucide="arrow-right" size="18"></i>
         </button>
+      </div>
     </div>
-</div>
   </div>
 
-  <!-- МОДАЛКА 1: НУЖЕН ДЕПОЗИТ (Фото 1) -->
+  <!-- МОДАЛКА 1: НУЖЕН ДЕПОЗИТ -->
   <div class="modal-overlay" id="modalDeposit">
     <div class="modal-box">
       <div class="modal-close" onclick="closeModals()"><i data-lucide="x" size="18"></i></div>
       <div class="modal-icon"><i data-lucide="sparkles" size="32"></i></div>
-      <div class="modal-title">Пополнить</div>
-      <div class="modal-desc">Ваш аккаунт успешно создан! Для активации софта пополните счёт минимум на 9$.</div>
-      <!-- Ссылка на пополнение / партнерку -->
+      <div class="modal-title">Пополнить счёт</div>
+      <div class="modal-desc" id="depositModalDesc">Для активации стартового уровня софта пополните счёт минимум на $100.</div>
       <a href="https://pocketoption.com/ru/cabinet/deposit-step-1/" target="_blank" class="modal-btn">
         <span>Пополнить</span>
         <i data-lucide="arrow-up-right" size="18"></i>
@@ -208,7 +203,7 @@
       <div class="modal-close" onclick="closeModals()"><i data-lucide="x" size="18"></i></div>
       <div class="modal-icon" style="color: #ff5252; background: rgba(255,82,82,0.1); border-color: rgba(255,82,82,0.3);"><i data-lucide="alert-circle" size="32"></i></div>
       <div class="modal-title">Аккаунт не найден</div>
-      <div class="modal-desc">Аккаунт зарегистрирован неверно. Зарегистрируйтесь по кнопке ниже.</div>
+      <div class="modal-desc">Аккаунт зарегистрирован неверно или отсутствует в партнерской базе. Зарегистрируйтесь по ссылке ниже.</div>
       <a href="https://u3.shortink.io/register?utm_campaign=753033&utm_source=affiliate&utm_medium=sr&a=3HuZKixpEazQth&al=1806646&ac=button_register_mtraid_soft&cid=988075" target="_blank" class="modal-btn" style="background: linear-gradient(135deg, #14785b, #198565); color: #fff;">
         <span>Зарегистрироваться</span>
         <i data-lucide="user-plus" size="18"></i>
@@ -216,7 +211,7 @@
     </div>
   </div>
 
-  <!-- МОДАЛКИ ОНБОРДИНГА (Шаги 1 - 4 как у конкурента) -->
+  <!-- МОДАЛКИ ОНБОРДИНГА -->
   <div class="modal-overlay" id="modalOnboarding">
     <div class="modal-box" style="text-align: left; align-items: stretch;">
       
@@ -266,42 +261,49 @@
     }
 
     async function verifyTraderId() {
-    const inputEl = document.getElementById('traderIdInput');
-    if (!inputEl) return alert('Ошибка: Поле ввода не найдено');
+      const inputEl = document.getElementById('traderIdInput');
+      if (!inputEl) return alert('Ошибка: Поле ввода не найдено');
 
-    const inputVal = inputEl.value.trim();
-    if (!inputVal) return;
+      const inputVal = inputEl.value.trim();
+      if (!inputVal) return;
 
-    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
-        window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+      if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+          window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+      }
+
+      try {
+          const response = await fetch(`https://mtraid.com/api/check/${inputVal}`);          
+          if (!response.ok) {
+              throw new Error(`Сервер вернул статус HTTP ${response.status}`);
+          }
+
+          const data = await response.json();
+
+          // Сохраняем ID трейдера
+          localStorage.setItem('verified_trader_id', inputVal);
+
+          // Фиксируем суммарный депозит, который пришел с бэкенда (из постбэков)
+          const totalDeposit = parseFloat(data.total_deposit || 0);
+          localStorage.setItem('user_total_deposit', totalDeposit);
+
+          // Проверка уровней (Start от $100, Elite от $250, Diamond от $1000, Unlimited от $5000)
+          if (data.access === 'granted' || totalDeposit >= 100) {
+              onboardingStep = 1;
+              if (typeof updateOnboardingContent === 'function') updateOnboardingContent();
+              document.getElementById('modalOnboarding')?.classList.add('active');
+          } else {
+              const neededText = totalDeposit > 0 
+                ? `Ваш текущий суммарный депозит: $${totalDeposit}. Для уровня Start необходимо от $100.` 
+                : `Для активации ИИ-сигналов и уровня Start необходим суммарный депозит от $100.`;
+              
+              document.getElementById('depositModalDesc').textContent = neededText;
+              document.getElementById('modalDeposit')?.classList.add('active');
+          }
+      } catch (error) {
+          alert('Детали ошибки: ' + error.message);
+      }
     }
 
-    try {
-        // Добавляем timestamp, чтобы Telegram WebView не брал сохраненный 404/ошибку из кэша
-const response = await fetch(`https://mtraid.com/api/check/${inputVal}`);        
-        if (!response.ok) {
-            throw new Error(`Сервер вернул статус HTTP ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        if (data.access === 'granted') {
-            localStorage.setItem('verified_trader_id', inputVal);
-            onboardingStep = 1;
-            if (typeof updateOnboardingContent === 'function') updateOnboardingContent();
-            document.getElementById('modalOnboarding')?.classList.add('active');
-        } else if (data.access === 'need_deposit') {
-            document.getElementById('modalDeposit')?.classList.add('active');
-        } else {
-            document.getElementById('modalError')?.classList.add('active');
-        }
-    } catch (error) {
-        // Выводим точный текст ошибки прямо на экран телефона для диагностики
-        alert('Детали ошибки: ' + error.message);
-    }
-}
-
-    // Логика шагов онбординга (как на скриншотах 2, 3, 4, 5)
     const onboardingStepsData = [
       {
         icon: "handshake",
@@ -334,7 +336,6 @@ const response = await fetch(`https://mtraid.com/api/check/${inputVal}`);
       
       onboardingStep++;
       if (onboardingStep > 4) {
-        // Конец онбординга — возвращаем в главное меню (`index.html`)
         window.location.href = 'index.html';
         return;
       }
@@ -344,13 +345,11 @@ const response = await fetch(`https://mtraid.com/api/check/${inputVal}`);
     function updateOnboardingContent() {
       const data = onboardingStepsData[onboardingStep - 1];
       
-      // Обновляем иконку, тексты и кнопку
       document.getElementById('obIcon').innerHTML = `<i data-lucide="${data.icon}" size="28"></i>`;
       document.getElementById('obTitle').textContent = data.title;
       document.getElementById('obDesc').textContent = data.desc;
       document.getElementById('obBtnText').textContent = data.btn;
       
-      // Обновляем полоски прогресса
       for (let i = 1; i <= 4; i++) {
         const bar = document.getElementById(`bar${i}`);
         if (i <= onboardingStep) bar.classList.add('active');
