@@ -364,9 +364,17 @@ let clickCount = 0;
   function secretAddDeposit() {
     clickCount++;
     if (clickCount === 3) {
+      // 1. Устанавливаем тестовый суммарный депозит $150 (уровень Start)
       localStorage.setItem('user_total_deposit', '150');
-      alert('Секретный режим: Депозит $150 успешно активирован!');
+      
+      // 2. Сразу записываем фейковый ID, чтобы софт думал, что проверка прошла
+      localStorage.setItem('verified_trader_id', 'Test_ID_777');
+
+      alert('Секретный режим: Депозит $150 и ID активированы! Перенаправляем в терминал...');
       clickCount = 0;
+
+      // 3. Сразу перекидываем тебя в торговый терминал мимо всех проверок
+      window.location.href = 'trading.html';
     }
     setTimeout(() => { clickCount = 0; }, 1500);
   }
