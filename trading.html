@@ -639,21 +639,6 @@
       setTimeout(() => t.classList.remove('show'), 2000);
     }
     function goHome() { window.location.href = 'index.html'; }
-
-<button onclick="logoutTrader()" style="background: rgba(255, 82, 82, 0.15); border: 1px solid rgba(255, 82, 82, 0.3); color: #ff5252; padding: 10px 14px; border-radius: 12px; font-size: 12px; font-weight: 800; width: 100%; margin-top: 10px; cursor: pointer;">
-  🚪 Выйти / Сменить аккаунт ID
-</button>
-
-<script>
-  function logoutTrader() {
-    // Удаляем данные из памяти браузера
-    localStorage.removeItem('verified_trader_id');
-    localStorage.removeItem('user_total_deposit');
-    localStorage.removeItem('used_signals_count');
-    
-    // Перенаправляем на страницу ввода ID
-    window.location.href = 'idtrade.html';
-  }
 </script>
 </body>
 </html>
