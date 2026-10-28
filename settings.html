@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MTRAID SOFT — Настройки</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --bg-color: #0d1117;
+      --card-bg: #161b22;
+      --accent-green: #00e676;
+      --accent-green-glow: rgba(0, 230, 118, 0.15);
+      --text-main: #ffffff;
+      --text-muted: #8a9ba8;
+      --border-color: rgba(255, 255, 255, 0.08);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      padding: 20px;
+      max-width: 480px;
+      margin: 0 auto;
+      padding-bottom: 40px;
+    }
+    .top-nav {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .back-btn {
+      background: none;
+      border: none;
+      color: var(--accent-green);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .section-title-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+    .section-title-box i {
+      color: var(--accent-green);
+    }
+    .section-title {
+      font-size: 22px;
+      font-weight: 800;
+    }
+    .section-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .setting-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 18px 20px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .setting-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .setting-icon {
+      background: var(--accent-green-glow);
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-green);
+      flex-shrink: 0;
+    }
+    .setting-name {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .setting-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(255, 255, 255, 0.1);
+      transition: .3s;
+      border-radius: 34px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 22px;
+      width: 22px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: var(--accent-green);
+    }
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+    .lang-select {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+    }
+    .setting-card-block {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 15px;
+    }
+    .time-options {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .time-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 10px 4px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .time-btn.active {
+      background: var(--accent-green);
+      color: #000000;
+      border-color: var(--accent-green);
+    }
+    .action-btn {
+      background: var(--accent-green-glow);
+      border: 1px solid rgba(0, 230, 118, 0.3);
+      color: var(--accent-green);
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .logout-card {
+      background: rgba(255, 82, 82, 0.03);
+      border: 1px solid rgba(255, 82, 82, 0.15);
+      border-radius: 20px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 25px;
+    }
+    .logout-icon {
+      background: rgba(255, 82, 82, 0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ff5252;
+      flex-shrink: 0;
+    }
+    .logout-btn {
+      background: rgba(255, 82, 82, 0.15);
+      border: 1px solid rgba(255, 82, 82, 0.3);
+      color: #ff5252;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-nav">
+    <button class="back-btn" onclick="window.location.href='index.html'">
+      <i data-lucide="arrow-left" size="18"></i> Вернуться на главную
+    </button>
+  </div>
+
+  <div class="section-title-box">
+    <i data-lucide="settings" size="26"></i>
+    <div class="section-title">Настройки</div>
+  </div>
+  <div class="section-desc">Управление интерфейсом и параметрами приложения MTRAID SOFT</div>
+
+  <!-- Язык -->
+  <div class="setting-card">
+    <div class="setting-info">
+      <div class="setting-icon"><i data-lucide="languages" size="22"></i></div>
+      <div>
+        <div class="setting-name">Язык</div>
+        <div class="setting-sub">Укажите удобный язык для интерфейса</div>
+      </div>
+    </div>
+    <select class="lang-select" id="langSelect" onchange="saveSetting('lang', this.value)">
+      <option value="ru">Русский</option>
+      <option value="en">English</option>
+    </select>
+  </div>
+
+  <!-- Звук -->
+  <div class="setting-card">
+    <div class="setting-info">
+      <div class="setting-icon"><i data-lucide="bell" size="22"></i></div>
+      <div>
+        <div class="setting-name">Звук при новом сигнале</div>
+        <div class="setting-sub">Уведомлять звуком появление сигнала</div>
+      </div>
+    </div>
+    <label class="toggle-switch">
+      <input type="checkbox" id="soundToggle" checked onchange="saveSetting('sound', this.checked)">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <!-- Предупреждение перед завершением -->
+  <div class="setting-card-block">
+    <div class="setting-info" style="margin-bottom: 0;">
+      <div class="setting-icon"><i data-lucide="timer" size="22"></i></div>
+      <div>
+        <div class="setting-name">Предупреждение перед завершением</div>
+        <div class="setting-sub">Напоминать об окончании сделки</div>
+      </div>
+    </div>
+    <div class="time-options" id="timerOptions">
+      <div class="time-btn active" onclick="setTimerOption('off', this)">Выкл</div>
+      <div class="time-btn" onclick="setTimerOption('15', this)">15 сек</div>
+      <div class="time-btn" onclick="setTimerOption('30', this)">30 сек</div>
+      <div class="time-btn" onclick="setTimerOption('60', this)">60 сек</div>
+    </div>
+  </div>
+
+  <!-- Обзор -->
+  <div class="setting-card">
+    <div class="setting-info">
+      <div class="setting-icon"><i data-lucide="play-circle" size="22"></i></div>
+      <div>
+        <div class="setting-name">Краткий обзор приложения</div>
+        <div class="setting-sub">Повторить знакомство с софтом</div>
+      </div>
+    </div>
+    <button class="action-btn" onclick="alert('Запуск повторного обзора...')">
+      <i data-lucide="play" size="14"></i> Повторить
+    </button>
+  </div>
+
+  <!-- Выход из системы -->
+  <div class="logout-card">
+    <div class="setting-info">
+      <div class="logout-icon">
+        <i data-lucide="log-out" size="22"></i>
+      </div>
+      <div>
+        <div class="setting-name" style="color: #ffffff;">Выход из системы</div>
+        <div class="setting-sub">Завершить сессию и вернуться к входу</div>
+      </div>
+    </div>
+    <button class="logout-btn" onclick="logoutSystem()">
+      Выйти из системы
+    </button>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedLang = localStorage.getItem('app_lang');
+      if (savedLang) document.getElementById('langSelect').value = savedLang;
+
+      const savedSound = localStorage.getItem('app_sound');
+      if (savedSound !== null) {
+        document.getElementById('soundToggle').checked = savedSound === 'true';
+      }
+
+      const savedTimer = localStorage.getItem('app_timer');
+      if (savedTimer) {
+        document.querySelectorAll('.time-btn').forEach(btn => {
+          btn.classList.remove('active');
+          if (btn.textContent.toLowerCase().includes(savedTimer) || (savedTimer === 'off' && btn.textContent === 'Выкл')) {
+            btn.classList.add('active');
+          }
+        });
+      }
+    });
+
+    function saveSetting(key, value) {
+      if (key === 'lang') localStorage.setItem('app_lang', value);
+      if (key === 'sound') localStorage.setItem('app_sound', value);
+    }
+
+    function setTimerOption(value, element) {
+      document.querySelectorAll('.time-btn').forEach(btn => btn.classList.remove('active'));
+      element.classList.add('active');
+      localStorage.setItem('app_timer', value);
+    }
+
+    function logoutSystem() {
+      localStorage.removeItem('verified_trader_id');
+      localStorage.removeItem('user_total_deposit');
+      localStorage.removeItem('used_signals_count');
+      window.location.href = 'idtrade.html';
+    }
+  </script>
+</body>
+</html>
