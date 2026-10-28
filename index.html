@@ -399,16 +399,6 @@
       </div>
     </div>
 
-<!-- Секретная карточка админки (скрыта по умолчанию) -->
-      <div class="menu-card" id="adminCard" style="display: none; border-color: #ff5252; background: rgba(255, 82, 82, 0.05);" onclick="openAdminPanel()">
-        <div class="card-icon" style="background: rgba(255, 82, 82, 0.15); color: #ff5252; border-color: rgba(255, 82, 82, 0.3);"><i data-lucide="shield-alert"></i></div>
-        <div class="card-info">
-          <h3 style="color: #ff5252;">Админ-панель</h3>
-          <p>Выдача тестового баланса</p>
-        </div>
-        <span class="badge-tag" style="background: #ff5252; color: #fff;">ADMIN</span>
-      </div>
-
     <!-- Нижний текст -->
     <div class="footer-desc">
       Форекс и рынок OTC — сигналы, график и инструменты технического анализа
@@ -431,30 +421,6 @@
     tg.ready();
 tg.setHeaderColor('#040906');
 tg.setBackgroundColor('#040906');
-
-// Твой Telegram ID администратора (замени цифры на свой ID)
-    const ADMIN_TELEGRAM_ID = 7759022687; 
-
-    // Для теста прямо в браузере на ПК (если проверяешь не в Telegram):
-    // const isDevAdmin = true; 
-
-    window.addEventListener('DOMContentLoaded', () => {
-      const tgUser = tg.initDataUnsafe && tg.initDataUnsafe.user;
-      
-      if ((tgUser && tgUser.id === ADMIN_TELEGRAM_ID) || window.isDevAdmin) {
-        document.getElementById('adminCard').style.display = 'flex';
-        lucide.createIcons();
-      }
-    });
-
-    // Функция открытия модалки админки
-    function openAdminPanel() {
-      document.getElementById('adminModal').classList.add('open');
-      lucide.createIcons();
-    }
-    function closeAdminPanel() {
-      document.getElementById('adminModal').classList.remove('open');
-    }
 
     lucide.createIcons();
 
