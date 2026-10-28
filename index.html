@@ -443,15 +443,20 @@ tg.setBackgroundColor('#040906');
       }, 500); 
     }, 4500);
 
-   function openSection(sectionName) {
+function openSection(sectionName) {
     if (tg.HapticFeedback) {
         tg.HapticFeedback.impactOccurred('medium');
     }
     console.log('Переход в раздел:', sectionName);
     
-    // Добавляем редирект на страницу с графиком
+    // Редирект на торговый терминал
     if (sectionName === 'signals') {
         window.location.href = 'trading.html';
+    }
+    
+    // Редирект на страницу настроек и выхода
+    if (sectionName === 'settings') {
+        window.location.href = 'settings.html';
     }
 }
   </script>

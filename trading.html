@@ -372,6 +372,16 @@
   <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 
   <script>
+
+<script>
+  // === ВСТАВЛЯЙ СЮДА (САМОЕ НАЧАЛО СКРИПТА) ===
+  (function checkAuth() {
+    const verifiedTraderId = localStorage.getItem('verified_trader_id');
+    if (!verifiedTraderId) {
+      window.location.href = 'idtrade.html';
+    }
+  })();
+
     const traderId = localStorage.getItem('verified_trader_id') || 'Demo_777';
     document.getElementById('user-uid-badge').textContent = 'ID: ' + traderId;
     lucide.createIcons();

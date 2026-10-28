@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Укажите ID аккаунта — MTRAID SOFT</title>
+  
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg-color: #040906;
+      --panel-bg: rgba(17, 26, 21, 0.85);
+      --panel-hover: rgba(23, 36, 29, 0.95);
+      --border-color: rgba(31, 51, 40, 0.9);
+      --accent-green: #00e676;
+      --accent-glow: rgba(0, 230, 118, 0.3);
+      --text-main: #ffffff;
+      --text-muted: #8ca396;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
+    body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; padding: 24px 16px 40px; display: flex; flex-direction: column; align-items: center; position: relative; }
+
+    .back-btn { position: absolute; top: 20px; left: 16px; width: 40px; height: 40px; background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 12px; display: grid; place-items: center; color: var(--text-muted); cursor: pointer; text-decoration: none; transition: all 0.2s ease; }
+    .back-btn:hover { color: var(--accent-green); border-color: var(--accent-green); }
+
+    .container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 20px; margin-top: 40px; z-index: 10; }
+    .top-brand { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .logo-box { width: 75px; height: 75px; background: linear-gradient(135deg, rgba(21, 41, 30, 0.8), rgba(10, 20, 14, 0.8)); border: 2px solid var(--accent-green); border-radius: 20px; display: grid; place-items: center; color: var(--accent-green); box-shadow: 0 0 20px var(--accent-glow); }
+    .brand-title { font-size: 24px; font-weight: 800; background: linear-gradient(90deg, #ffffff, var(--accent-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .auth-card { background: var(--panel-bg); backdrop-filter: blur(12px); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5); }
+    .card-heading { display: flex; align-items: flex-start; gap: 14px; }
+    .heading-icon { width: 46px; height: 46px; background: rgba(0, 230, 118, 0.1); border: 1px solid rgba(0, 230, 118, 0.3); border-radius: 12px; display: grid; place-items: center; color: var(--accent-green); flex: none; }
+    .card-heading h1 { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .card-heading p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+    .id-section { border-top: 1px solid var(--border-color); margin-top: 18px; padding-top: 16px; }
+    .id-input-wrap { background: #0b1410; border: 1px solid var(--border-color); border-radius: 14px; height: 56px; display: flex; align-items: center; padding: 0 16px; gap: 12px; margin-top: 12px; }
+    .id-input-wrap:focus-within { border-color: var(--accent-green); box-shadow: 0 0 15px var(--accent-glow); }
+    .id-input-wrap input { background: transparent; border: none; outline: none; color: #fff; font-size: 16px; font-weight: 700; width: 100%; }
+    .id-input-wrap input::placeholder { color: var(--text-muted); font-size: 13px; }
+
+    .check-btn { width: 100%; height: 52px; background: linear-gradient(135deg, #059669, #00e676); border: none; border-radius: 14px; color: #042f1a; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; margin-top: 12px; cursor: pointer; box-shadow: 0 8px 20px rgba(0, 230, 118, 0.2); transition: all 0.2s ease; }
+    .check-btn:hover { transform: translateY(-2px); }
+
+    /* МОДАЛЬНЫЕ ОКНА */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(4, 9, 6, 0.85); backdrop-filter: blur(8px); display: none; place-items: center; z-index: 100; padding: 16px; }
+    .modal-overlay.active { display: grid; }
+    .modal-box { background: #111a15; border: 1px solid var(--border-color); border-radius: 24px; width: 100%; max-width: 420px; padding: 24px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.6); animation: modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+    
+    @keyframes modalIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    .modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 50%; display: grid; place-items: center; color: var(--text-muted); cursor: pointer; }
+    .modal-close:hover { color: #fff; border-color: var(--accent-green); }
+    
+    .modal-icon { width: 64px; height: 64px; background: rgba(0, 230, 118, 0.1); border: 1px solid rgba(0, 230, 118, 0.3); border-radius: 20px; display: grid; place-items: center; color: var(--accent-green); margin-bottom: 16px; }
+    .modal-title { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .modal-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 24px; }
+    
+    .modal-btn { width: 100%; height: 50px; background: linear-gradient(135deg, #059669, #00e676); border: none; border-radius: 14px; color: #042f1a; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; cursor: pointer; box-shadow: 0 8px 20px rgba(0, 230, 118, 0.2); }
+    
+    /* Прогресс-бар для онбординга */
+    .onboarding-progress { width: 100%; display: flex; gap: 6px; margin-bottom: 20px; }
+    .progress-bar { flex: 1; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+    .progress-bar.active { background: var(--accent-green); box-shadow: 0 0 8px var(--accent-glow); }
+
+    .action-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      box-sizing: border-box;
+      margin-top: 10px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .action-btn .btn-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      margin-right: 12px;
+    }
+
+    .action-btn span {
+      flex-grow: 1;
+      text-align: left;
+    }
+
+    .register-btn {
+      background: #0f8b5f;
+      color: #ffffff;
+    }
+
+    .register-btn .btn-icon {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .register-btn:active {
+      opacity: 0.85;
+      transform: scale(0.98);
+    }
+
+    .secondary-btn {
+      background: #17212b;
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .secondary-btn .btn-icon {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .secondary-btn:active {
+      background: #1e2c3a;
+      transform: scale(0.98);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="top-brand">
+<div class="logo-box" onclick="secretAddDeposit()" style="cursor: pointer;" title="Кликните 3 раза для теста">
+        <i data-lucide="shield-check" size="38"></i>
+      </div>
+      <div class="brand-title">MTRAID SOFT</div>
+    </div>
+
+    <div class="auth-card">
+      <div class="card-heading">
+        <div class="heading-icon"><i data-lucide="user-check" size="24"></i></div>
+        <div>
+          <h1>Укажите ID аккаунта</h1>
+          <p>Если аккаунт не найден, зарегистрируйтесь по ссылке и пополните счёт.</p>
+        </div>
+      </div>
+
+      <div class="id-section">
+        <div style="font-size: 13px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px;">
+          <i data-lucide="hash" size="16" style="color: var(--accent-green);"></i> ID аккаунта Pocket Option
+        </div>
+        <div class="id-input-wrap">
+          <i data-lucide="hash" size="18" style="color: var(--text-muted);"></i>
+          <input type="number" id="traderIdInput" placeholder="Введите ID аккаунта">
+        </div>
+        
+        <button type="button" id="mainCheckBtn" class="check-btn" onclick="verifyTraderId()">
+          <span>Найти аккаунт</span>
+          <i data-lucide="arrow-right" size="20"></i>
+        </button>
+
+        <button type="button" class="action-btn register-btn" onclick="openRefLink()">
+          <div class="btn-icon">
+            <i data-lucide="user-plus" size="20"></i>
+          </div>
+          <span>Создать аккаунт</span>
+          <i data-lucide="external-link" size="18"></i>
+        </button>
+
+        <button type="button" class="action-btn secondary-btn" onclick="openRefLink()">
+          <div class="btn-icon">
+            <i data-lucide="check-circle-2" size="20"></i>
+          </div>
+          <span>У меня уже есть аккаунт</span>
+          <i data-lucide="arrow-right" size="18"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- МОДАЛКА 1: НУЖЕН ДЕПОЗИТ -->
+  <div class="modal-overlay" id="modalDeposit">
+    <div class="modal-box">
+      <div class="modal-close" onclick="closeModals()"><i data-lucide="x" size="18"></i></div>
+      <div class="modal-icon"><i data-lucide="sparkles" size="32"></i></div>
+      <div class="modal-title">Пополнить счёт</div>
+      <div class="modal-desc" id="depositModalDesc">Для активации стартового уровня софта пополните счёт минимум на $100.</div>
+      <a href="https://pocketoption.com/ru/cabinet/deposit-step-1/" target="_blank" class="modal-btn">
+        <span>Пополнить</span>
+        <i data-lucide="arrow-up-right" size="18"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- МОДАЛКА 2: АККАУНТ НЕ НАЙДЕН / НЕВЕРЕН -->
+  <div class="modal-overlay" id="modalError">
+    <div class="modal-box">
+      <div class="modal-close" onclick="closeModals()"><i data-lucide="x" size="18"></i></div>
+      <div class="modal-icon" style="color: #ff5252; background: rgba(255,82,82,0.1); border-color: rgba(255,82,82,0.3);"><i data-lucide="alert-circle" size="32"></i></div>
+      <div class="modal-title">Аккаунт не найден</div>
+      <div class="modal-desc">Аккаунт зарегистрирован неверно или отсутствует в партнерской базе. Зарегистрируйтесь по ссылке ниже.</div>
+      <a href="https://u3.shortink.io/register?utm_campaign=753033&utm_source=affiliate&utm_medium=sr&a=3HuZKixpEazQth&al=1806646&ac=button_register_mtraid_soft&cid=988075" target="_blank" class="modal-btn" style="background: linear-gradient(135deg, #14785b, #198565); color: #fff;">
+        <span>Зарегистрироваться</span>
+        <i data-lucide="user-plus" size="18"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- МОДАЛКИ ОНБОРДИНГА -->
+  <div class="modal-overlay" id="modalOnboarding">
+    <div class="modal-box" style="text-align: left; align-items: stretch;">
+      
+      <div class="onboarding-progress" id="obProgress">
+        <div class="progress-bar active" id="bar1"></div>
+        <div class="progress-bar" id="bar2"></div>
+        <div class="progress-bar" id="bar3"></div>
+        <div class="progress-bar" id="bar4"></div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--accent-green); margin-bottom: 12px;">
+        <i data-lucide="sparkles" size="16"></i> Кратко о следующих шагах
+      </div>
+
+      <div style="display: grid; place-items: center; width: 56px; height: 56px; background: rgba(0,230,118,0.1); border-radius: 16px; color: var(--accent-green); margin: 10px 0 16px;" id="obIcon">
+        <i data-lucide="handshake" size="28"></i>
+      </div>
+
+      <div class="modal-title" id="obTitle" style="font-size: 18px; text-align: left;">Добро пожаловать в MTRAID SOFT!</div>
+      <div class="modal-desc" id="obDesc" style="text-align: left; margin-bottom: 24px;">В меню откройте «Сигналы», укажите валютную пару и срок — приложение покажет направление ВВЕРХ или ВНИЗ.</div>
+
+      <button class="modal-btn" onclick="nextOnboardingStep()">
+        <span id="obBtnText">Продолжить</span>
+        <i data-lucide="arrow-right" size="18"></i>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    lucide.createIcons();
+
+    function openRefLink() {
+        const url = 'https://u3.shortink.io/register?utm_campaign=753033&utm_source=affiliate&utm_medium=sr&a=3HuZKixpEazQth&al=1806646&ac=button_register_mtraid_soft&cid=988075';
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openLink) {
+            window.Telegram.WebApp.openLink(url);
+        } else {
+            window.open(url, '_blank');
+        }
+    }
+
+    let onboardingStep = 1;
+
+    function closeModals() {
+      document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+    }
+
+    async function verifyTraderId() {
+      const inputEl = document.getElementById('traderIdInput');
+      if (!inputEl) return alert('Ошибка: Поле ввода не найдено');
+
+      const inputVal = inputEl.value.trim();
+      if (!inputVal) return;
+
+      if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+          window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+      }
+
+      try {
+          const response = await fetch(`https://mtraid.com/api/check/${inputVal}`);          
+          if (!response.ok) {
+              throw new Error(`Сервер вернул статус HTTP ${response.status}`);
+          }
+
+          const data = await response.json();
+
+          // Сохраняем ID трейдера
+          localStorage.setItem('verified_trader_id', inputVal);
+
+          // Фиксируем суммарный депозит, который пришел с бэкенда (из постбэков)
+          const totalDeposit = parseFloat(data.total_deposit || 0);
+          localStorage.setItem('user_total_deposit', totalDeposit);
+
+          // Проверка уровней (Start от $100, Elite от $250, Diamond от $1000, Unlimited от $5000)
+          if (data.access === 'granted' || totalDeposit >= 100) {
+              onboardingStep = 1;
+              if (typeof updateOnboardingContent === 'function') updateOnboardingContent();
+              document.getElementById('modalOnboarding')?.classList.add('active');
+          } else {
+              const neededText = totalDeposit > 0 
+                ? `Ваш текущий суммарный депозит: $${totalDeposit}. Для уровня Start необходимо от $100.` 
+                : `Для активации ИИ-сигналов и уровня Start необходим суммарный депозит от $100.`;
+              
+              document.getElementById('depositModalDesc').textContent = neededText;
+              document.getElementById('modalDeposit')?.classList.add('active');
+          }
+      } catch (error) {
+          alert('Детали ошибки: ' + error.message);
+      }
+    }
+
+    const onboardingStepsData = [
+      {
+        icon: "handshake",
+        title: "Добро пожаловать в MTRAID SOFT!",
+        desc: "В меню откройте «Сигналы», укажите валютную пару и срок — приложение покажет направление ВВЕРХ или ВНИЗ.",
+        btn: "Продолжить"
+      },
+      {
+        icon: "target",
+        title: "График для каждого сигнала",
+        desc: "Вместе с сигналом вы увидите график и краткую аналитику: RSI, MACD, EMA и ценовые зоны.",
+        btn: "Продолжить"
+      },
+      {
+        icon: "trophy",
+        title: "Контролируйте результаты",
+        desc: "Фиксируйте исход сделок в «Личном кабинете», чтобы видеть долю прибыльных сигналов.",
+        btn: "Продолжить"
+      },
+      {
+        icon: "megaphone",
+        title: "Присоединяйтесь к сообществу",
+        desc: "Подпишитесь на наш Telegram-канал: разборы сделок, свежие сигналы и новости приложения раньше всех.",
+        btn: "Перейти в меню"
+      }
+    ];
+
+    function nextOnboardingStep() {
+      if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+      
+      onboardingStep++;
+      if (onboardingStep > 4) {
+        window.location.href = 'index.html';
+        return;
+      }
+      updateOnboardingContent();
+    }
+
+    function updateOnboardingContent() {
+      const data = onboardingStepsData[onboardingStep - 1];
+      
+      document.getElementById('obIcon').innerHTML = `<i data-lucide="${data.icon}" size="28"></i>`;
+      document.getElementById('obTitle').textContent = data.title;
+      document.getElementById('obDesc').textContent = data.desc;
+      document.getElementById('obBtnText').textContent = data.btn;
+      
+      for (let i = 1; i <= 4; i++) {
+        const bar = document.getElementById(`bar${i}`);
+        if (i <= onboardingStep) bar.classList.add('active');
+        else bar.classList.remove('active');
+      }
+      lucide.createIcons();
+    }
+
+let clickCount = 0;
+  function secretAddDeposit() {
+    clickCount++;
+    if (clickCount === 3) {
+      // 1. Устанавливаем тестовый суммарный депозит $150 (уровень Start)
+      localStorage.setItem('user_total_deposit', '150');
+      
+      // 2. Сразу записываем фейковый ID, чтобы софт думал, что проверка прошла
+      localStorage.setItem('verified_trader_id', 'Test_ID_777');
+
+      alert('Секретный режим: Депозит $150 и ID активированы! Перенаправляем в терминал...');
+      clickCount = 0;
+
+      // 3. Сразу перекидываем тебя в торговый терминал мимо всех проверок
+      window.location.href = 'trading.html';
+    }
+    setTimeout(() => { clickCount = 0; }, 1500);
+  }
+
+  </script>
+</body>
+</html>
