@@ -162,8 +162,8 @@
           <i data-lucide="arrow-right" size="20"></i>
         </button>
 
-<!-- Кнопка вызова админ-панели -->
-<div style="text-align: center; margin-top: 12px; cursor: pointer;" onclick="openAdminPanel()">
+<!-- Кнопка админ-панели (скрыта по умолчанию) -->
+<div id="adminTriggerBtn" style="display: none; text-align: center; margin-top: 12px; cursor: pointer;" onclick="openAdminPanel()">
   <span style="font-size: 11px; color: #ff5252; background: rgba(255, 82, 82, 0.1); border: 1px solid rgba(255, 82, 82, 0.3); padding: 4px 10px; border-radius: 8px; font-weight: 700;">
     🛡️ Открыть админ-панель
   </span>
@@ -420,6 +420,19 @@ let clickCount = 0;
   function closeAdminPanel() {
     document.getElementById('adminModal').style.display = 'none';
   }
+window.addEventListener('DOMContentLoaded', () => {
+    const tg = window.Telegram.WebApp;
+    const tgUser = tg.initDataUnsafe && tg.initDataUnsafe.user;
+    const ADMIN_TELEGRAM_ID = 7759022687; // Твой ID
+
+    // Если ID совпадает — показываем кнопку админки на странице
+    if (tgUser && tgUser.id === ADMIN_TELEGRAM_ID) {
+      const adminBtn = document.getElementById('adminTriggerBtn');
+      if (adminBtn) {
+        adminBtn.style.display = 'block';
+      }
+    }
+  });
   function applyAdminModalOverride() {
     const uid = document.getElementById('adminTargetUid').value.trim();
     const deposit = document.getElementById('adminTargetDeposit').value.trim();
