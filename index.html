@@ -399,6 +399,16 @@
       </div>
     </div>
 
+<!-- Секретная карточка админки (скрыта по умолчанию) -->
+      <div class="menu-card" id="adminCard" style="display: none; border-color: #ff5252; background: rgba(255, 82, 82, 0.05);" onclick="openAdminPanel()">
+        <div class="card-icon" style="background: rgba(255, 82, 82, 0.15); color: #ff5252; border-color: rgba(255, 82, 82, 0.3);"><i data-lucide="shield-alert"></i></div>
+        <div class="card-info">
+          <h3 style="color: #ff5252;">Админ-панель</h3>
+          <p>Выдача тестового баланса</p>
+        </div>
+        <span class="badge-tag" style="background: #ff5252; color: #fff;">ADMIN</span>
+      </div>
+
     <!-- Нижний текст -->
     <div class="footer-desc">
       Форекс и рынок OTC — сигналы, график и инструменты технического анализа
@@ -421,6 +431,30 @@
     tg.ready();
 tg.setHeaderColor('#040906');
 tg.setBackgroundColor('#040906');
+
+// Твой Telegram ID администратора (замени цифры на свой ID)
+    const ADMIN_TELEGRAM_ID = 7759022687; 
+
+    // Для теста прямо в браузере на ПК (если проверяешь не в Telegram):
+    // const isDevAdmin = true; 
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const tgUser = tg.initDataUnsafe && tg.initDataUnsafe.user;
+      
+      if ((tgUser && tgUser.id === ADMIN_TELEGRAM_ID) || window.isDevAdmin) {
+        document.getElementById('adminCard').style.display = 'flex';
+        lucide.createIcons();
+      }
+    });
+
+    // Функция открытия модалки админки
+    function openAdminPanel() {
+      document.getElementById('adminModal').classList.add('open');
+      lucide.createIcons();
+    }
+    function closeAdminPanel() {
+      document.getElementById('adminModal').classList.remove('open');
+    }
 
     lucide.createIcons();
 
@@ -460,5 +494,57 @@ function openSection(sectionName) {
     }
 }
   </script>
+
+<!-- МОДАЛЬНОЕ ОКНО АДМИН-ПАНЕЛИ -->
+<div class="modal-overlay" id="adminModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 16px;">
+  <div class="modal-card" style="width: 100%; max-width: 400px; background: #111a15; border: 1px solid #ff5252; border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 20px 40px rgba(0,0,0,0.8);">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div style="font-size: 16px; font-weight: 800; color: #ff5252; display: flex; align-items: center; gap: 8px;">
+        <i data-lucide="shield-alert" size="20"></i> Управление доступом
+      </div>
+      <i data-lucide="x" size="20" style="cursor: pointer; color: #fff;" onclick="closeAdminPanel()"></i>
+    </div>
+    
+    <div style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">
+      Введите UID пользователя Pocket Option, которому нужно выдать принудительный баланс для обхода проверки.
+    </div>
+
+    <div>
+      <label style="font-size: 11px; font-weight: 700; color: #fff;">UID аккаунта:</label>
+      <input type="text" id="adminTargetUid" class="search-input" placeholder="Например: 77788899" style="width: 100%; margin-top: 6px; background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); border-radius: 12px; padding: 10px 14px; color: #fff; outline: none;">
+    </div>
+
+    <div>
+      <label style="font-size: 11px; font-weight: 700; color: #fff;">Сумма баланса ($):</label>
+      <input type="number" id="adminTargetDeposit" class="search-input" value="150" style="width: 100%; margin-top: 6px; background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); border-radius: 12px; padding: 10px 14px; color: #fff; outline: none;">
+    </div>
+
+    <button onclick="applyAdminOverride()" style="width: 100%; height: 48px; background: linear-gradient(135deg, #d32f2f, #ff5252); border: none; border-radius: 14px; color: #fff; font-size: 14px; font-weight: 800; cursor: pointer; margin-top: 6px;">
+      Активировать доступ и баланс
+    </button>
+  </div>
+</div>
+
+<script>
+  // Логика сохранения админского бонуса в localStorage
+  function applyAdminOverride() {
+    const uid = document.getElementById('adminTargetUid').value.trim();
+    const deposit = document.getElementById('adminTargetDeposit').value.trim();
+
+    if (!uid) {
+      alert('Введите UID!');
+      return;
+    }
+
+    // Записываем в память браузера так, будто этот UID прошел проверку с нужным депозитом
+    localStorage.setItem('verified_trader_id', uid);
+    localStorage.setItem('user_total_deposit', deposit);
+    localStorage.setItem('used_signals_count', '0');
+
+    alert(`Успешно! Для UID ${uid} установлен баланс $${deposit}. Теперь можно проверять терминал.`);
+    closeAdminPanel();
+  }
+</script>
+
 </body>
 </html>
